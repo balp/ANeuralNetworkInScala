@@ -10,8 +10,8 @@ import breeze.stats.mean
 object NNWithBackPropagation extends App {
   var X : DenseMatrix[Double] = DenseMatrix( (0.0,0.0,1.0), (0.0,1.0,1.0), (1.0,0.0,1.0), (1.0,1.0,1.0) )
   var Y : DenseMatrix[Double] =  DenseMatrix((0.0),(1.0),(1.0),(0.0))
-  var syn0 = DenseMatrix.rand(3,4)
-  var syn1 = DenseMatrix.rand(4,1)
+  var syn0 = DenseMatrix.rand(3,4).mapValues( 2 * _ - 1)
+  var syn1 = DenseMatrix.rand(4,1).mapValues( 2 * _ - 1)
 
   println(X)
   println(Y)
