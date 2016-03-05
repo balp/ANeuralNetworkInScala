@@ -3,11 +3,14 @@ package se.hiq.neural
 import breeze.linalg._
 import breeze.numerics._
 import breeze.stats._
+import breeze.stats.distributions.Binomial
 
+import scala.util.Random
+;
 /**
   * Created by balp on 2016-03-03.
   */
-object NNGradientWithDropOut {
+object NNGradientWithDropOut extends App {
   val alphas = Array(0.001,0.01,0.1,1,10,100,1000)
   val hiddenSize = 32
   val do_dropOut = true
@@ -26,16 +29,19 @@ object NNGradientWithDropOut {
     //var layer_2: DenseMatrix[Double] = X
     var train = 0
     for (train <- 0 to 60000) {
+      var rand = Random
       val layer_0 = X
       val layer_1 = sigmoid(layer_0 * synapse_0)
       if (do_dropOut) {
+
         //layer_1 *= np.random.binomial([
         // np.ones((len(X),hidden_dim))
         // ],
         // 1-dropout_percent)[0] * (1.0/(1-dropout_percent))
-        val ones = DenseMatrix.ones(hiddenSize, 1)
-        val tmp_layer = layer_1
-        layer_1 :*= tmp_layer
+//        val bin = Binomial(1, (1-dropout_percent)*(1.0/(1-dropout_percent)))
+//        val tmp_layer = DenseMatrix.rand(X.cols, hiddenSize, bin)
+//        layer_1 :* tmp_layer
+        layer_1.map(d  => if (rand.nextDouble() < dropout_percent) {0.0} else { d } )
       }
       val layer_2 = sigmoid(layer_1 * synapse_1)
       val layer_2_error = layer_2 - Y
